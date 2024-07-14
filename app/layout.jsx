@@ -8,6 +8,10 @@ export const metadata = {
   keywords: 'rental, find rentals, property, rent, find properties',
 };
 
+const Loading = () => {
+  return <p>Loading...</p>;
+};
+
 const MainLayout = ({ children }) => {
   return (
     <html lang='en'>
