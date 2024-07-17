@@ -168,8 +168,8 @@ const Navbar = () => {
                       className='h-8 w-8 rounded-full'
                       src={profileImage || profileDefault}
                       alt=''
-                      width={0}
-                      height={0}
+                      width={40}
+                      height={40}
                     />
                   </button>
                 </div>
@@ -215,6 +215,7 @@ const Navbar = () => {
                       id='user-menu-item-2'
                       onClick={() => {
                         setIsProfileMenuOpen(false);
+                        signOut();
                       }}
                     >
                       Sign Out
