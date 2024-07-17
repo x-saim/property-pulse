@@ -1,3 +1,5 @@
+import connectDB from '@/config/db';
+import User from '@/models/User';
 import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions = {
@@ -16,12 +18,7 @@ export const authOptions = {
   ],
   callbacks: {
     // Invoked on successful sign in
-    async signIn({ profile }) {
-      // 1. Connect to database
-      // 2. Check if user exists in database
-      // 3. If not, create user in database
-      // 4. return true to allow sign in
-    },
+    async signIn({ profile }) {},
     // Session callback function that modifies the session object
     async session({ session }) {
       // 1. Get user from database
