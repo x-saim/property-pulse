@@ -14,7 +14,7 @@ async function fetchProperties() {
 
     if (!res.ok) {
       if (res.status === 404) {
-        throw new Error('Property not found.');
+        throw new Error('Properties not found.');
       } else if (res.status === 500) {
         throw new Error('Server error occurred.');
       } else {
@@ -28,4 +28,30 @@ async function fetchProperties() {
   }
 }
 
-export { fetchProperties };
+async function fetchProperty(propertyId) {
+  try {
+    // Handle the case when the domain is not available yet
+    if (!apiDomain) {
+      return null;
+    }
+
+    const res = await fetch(`${apiDomain}/properties/${propertyId}`);
+
+    if (!res.ok) {
+      if (res.status === 404) {
+        throw new Error('Property not found.');
+      } else if (res.status === 500) {
+        throw new Error('Server error occurred.');
+      } else {
+        throw new Error('Failed to fetch data.');
+      }
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching property:', error);
+    return null;
+  }
+}
+
+export { fetchProperties, fetchProperty };
