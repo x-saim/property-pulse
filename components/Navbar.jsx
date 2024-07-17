@@ -11,7 +11,6 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 const Navbar = () => {
   const { data: session } = useSession();
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [providers, setProviders] = useState(null);
@@ -22,12 +21,13 @@ const Navbar = () => {
   useEffect(() => {
     const setAuthProviders = async () => {
       const res = await getProviders();
-
       setProviders(res);
     };
 
     setAuthProviders();
   }, []);
+
+  const profileImage = session?.user?.image;
 
   return (
     <nav className='bg-blue-700 border-b border-blue-500'>
@@ -166,8 +166,10 @@ const Navbar = () => {
                     <span className='sr-only'>Open user menu</span>
                     <Image
                       className='h-8 w-8 rounded-full'
-                      src={profileDefault}
+                      src={profileImage || profileDefault}
                       alt=''
+                      width={0}
+                      height={0}
                     />
                   </button>
                 </div>
