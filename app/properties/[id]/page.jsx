@@ -5,19 +5,9 @@ import { useParams } from 'next/navigation';
 import { fetchProperty } from '@/utils/requests';
 import PropertyHeaderImage from '@/components/PropertyHeaderImage';
 import PropertyDetails from '@/components/PropertyDetails';
-import {
-  FaBed,
-  FaBath,
-  FaRulerCombined,
-  FaTimes,
-  FaCheck,
-  FaPaperPlane,
-  FaBookmark,
-  FaShare,
-  FaMapMarker,
-  FaArrowLeft,
-} from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 import PropertySidebar from '@/components/PropertySidebar';
+import Spinner from '@/components/Spinner';
 
 /**
  * React functional component for displaying a property page.
@@ -50,6 +40,8 @@ const PropertyPage = () => {
 
   return (
     <>
+      {loading && <Spinner loading={loading} />}
+
       {/* Header Image */}
       {!loading && property && (
         <>
