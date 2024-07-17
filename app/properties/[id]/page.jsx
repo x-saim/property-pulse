@@ -1,47 +1,84 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { fetchProperty } from '@/utils/requests';
-import { NextResponse } from 'next/server';
+import PropertyHeaderImage from '@/components/PropertyHeaderImage';
+import PropertyDetails from '@/components/PropertyDetails';
+import {
+  FaBed,
+  FaBath,
+  FaRulerCombined,
+  FaTimes,
+  FaCheck,
+  FaPaperPlane,
+  FaBookmark,
+  FaShare,
+  FaMapMarker,
+  FaArrowLeft,
+} from 'react-icons/fa';
+import PropertySidebar from '@/components/PropertySidebar';
 
 /**
- * Fetches property data based on the provided id and updates the state accordingly.
- * If the id is falsy, no action is taken.
- * Handles loading state, error state, and sets the property state upon successful data retrieval.
- * Logs an error message if fetching data fails and updates the error state.
- * Finally, sets the loading state to false after completion.
+ * React functional component for displaying a property page.
+ * Fetches property data based on the provided ID and handles loading and error states.
+ * Displays the property information and header image if available.
  */
 const PropertyPage = () => {
   const { id } = useParams();
 
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchPropertyData = async (id, setProperty, setLoading, setError) => {
-    if (!id) return;
-    try {
-      const property = await fetchProperty(id);
-      setProperty(property);
-    } catch (error) {
-      console.error('Error fetching property data:', error);
-      setError('Failed to load property data. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    if (property === null) {
-      fetchPropertyData(id, setProperty, setLoading, setError);
-    }
-  }, [id, property]);
+    const fetchPropertyData = async () => {
+      const property = await fetchProperty(id);
+      setProperty(property);
+      setLoading(false);
+    };
+
+    fetchPropertyData();
+  }, [id]);
+
+  if (!property && !loading) {
+    return (
+      <h1 className='text-center text-2xl font-bold mt-10'>
+        Property Not Found.
+      </h1>
+    );
+  }
 
   return (
-    <div>
-      {error && <div className='text-red-500'>{error}</div>}
-      <div className='text-3xl'>PropertyPage</div>
-    </div>
+    <>
+      {/* Header Image */}
+      {!loading && property && (
+        <>
+          <PropertyHeaderImage image={property.images[0]} />
+          <section>
+            <div className='container m-auto py-6 px-6'>
+              <Link
+                href='/properties'
+                className='text-blue-500 hover:text-blue-600 flex items-center'
+              >
+                <FaArrowLeft className='mr-2' />
+                Back to Properties
+              </Link>
+            </div>
+          </section>
+          <section className='bg-blue-50'>
+            <div className='container m-auto py-10 px-6'>
+              <div className='grid grid-cols-1 md:grid-cols-70/30 w-full gap-6'>
+                {/* <!-- Main Section --> */}
+                <PropertyDetails property={property} />
+
+                {/* <!-- Sidebar --> */}
+                <PropertySidebar property={property} />
+              </div>
+            </div>
+          </section>
+        </>
+      )}
+    </>
   );
 };
 
