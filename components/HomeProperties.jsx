@@ -1,10 +1,13 @@
 import React from 'react';
-import properties from '@/properties.json';
+import { fetchProperties } from '@/utils/requests';
 import PropertyCard from '@/components/PropertyCard';
 import Link from 'next/link';
 
-const HomeProperties = () => {
-  const recentProperties = properties
+const HomeProperties = async () => {
+  const data = await fetchProperties();
+
+  // After sorting randomly, select the first 3 elements from the randomly sorted array.
+  const recentProperties = data.properties
     .sort(() => Math.random() - Math.random())
     .slice(0, 3);
 
