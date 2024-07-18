@@ -3,27 +3,27 @@ import React from 'react';
 import { useState } from 'react';
 
 const testField = {
-  type: 'Apartment',
-  name: 'Test Property',
+  type: '',
+  name: '',
   description: '',
   location: {
     street: '',
-    city: 'Test City',
-    state: 'Test State',
+    city: '',
+    state: '',
     zipcode: '',
   },
-  beds: '3',
-  baths: '2',
-  square_feet: '1800',
+  beds: '',
+  baths: '',
+  square_feet: '',
   amenities: [],
   rates: {
     weekly: '',
-    monthly: '2000',
+    monthly: '',
     nightly: '',
   },
   seller_info: {
     name: '',
-    email: 'test@test.com',
+    email: '',
     phone: '',
   },
   images: [],
@@ -509,7 +509,7 @@ const PropertyAddForm = () => {
         <input
           type='text'
           id='seller_name'
-          name='seller_info.name.'
+          name='seller_info.name'
           className='border rounded w-full py-2 px-3'
           placeholder='Name'
           value={fields.seller_info.name}
@@ -565,6 +565,7 @@ const PropertyAddForm = () => {
           accept='image/*'
           multiple
           onChange={handleImageChange}
+          required
         />
       </div>
 

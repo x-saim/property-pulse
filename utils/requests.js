@@ -8,9 +8,7 @@ const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
  */
 async function fetchProperties() {
   try {
-    const res = await fetch(`${apiDomain}/properties`, {
-      cache: 'no-store',
-    });
+    const res = await fetch(`${apiDomain}/properties`);
 
     if (!res.ok) {
       if (res.status === 404) {

@@ -8,6 +8,7 @@ import PropertyDetails from '@/components/PropertyDetails';
 import { FaArrowLeft } from 'react-icons/fa';
 import PropertySidebar from '@/components/PropertySidebar';
 import Spinner from '@/components/Spinner';
+import PropertyImages from '@/components/PropertyImages';
 
 /**
  * React functional component for displaying a property page.
@@ -42,9 +43,9 @@ const PropertyPage = () => {
     <>
       {loading && <Spinner loading={loading} />}
 
-      {/* Header Image */}
       {!loading && property && (
         <>
+          {/* Header Image */}
           <PropertyHeaderImage image={property.images[0]} />
           <section>
             <div className='container m-auto py-6 px-6'>
@@ -68,6 +69,7 @@ const PropertyPage = () => {
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images} />
         </>
       )}
     </>
