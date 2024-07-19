@@ -17,7 +17,10 @@ export const GET = async (request, { params }) => {
     const { userId } = params;
 
     if (!userId) {
-      return NextResponse('User ID is required', { status: 400 });
+      return NextResponse.json(
+        { message: 'User ID is required.' },
+        { status: 400 }
+      );
     }
 
     const properties = await Property.find({ owner: userId });

@@ -37,6 +37,7 @@ export const GET = async (request) => {
   }
 };
 
+// POST /api/properties
 /**
  * Handles the POST request to add a new property to the database.
  * Retrieves the user ID from the session and validates its presence.

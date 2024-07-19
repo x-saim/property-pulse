@@ -8,6 +8,8 @@ import profileDefault from '@/assets/images/profile.png';
 
 const ProfilePage = () => {
   const { data: session } = useSession();
+
+  //Optional chaining
   const profileImage = session?.user?.image;
   const profileName = session?.user?.name;
   const profileEmail = session?.user?.email;
@@ -43,6 +45,38 @@ const ProfilePage = () => {
       fetchUserProperties(session.user.id);
     }
   }, [session]);
+
+  const handleDeleteProperty = async (propertyId) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this property?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      // Delete request
+      const res = await fetch(`/api/properties/${propertyId}`, {
+        method: 'DELETE',
+      });
+      //check status of res received from req
+      if (res.status === 200) {
+        //if OK then remove the property from state
+        const updatedProperties = properties.filter(
+          (property) => property._id !== propertyId
+        );
+
+        setProperties(updatedProperties);
+        alert('Property Deleted.');
+      } else {
+        alert('Failed to delete property.');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Failed to delete property.');
+    }
+  };
 
   return (
     <section className='bg-blue-50'>
@@ -111,6 +145,7 @@ const ProfilePage = () => {
                       <button
                         className='bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600'
                         type='button'
+                        onClick={() => handleDeleteProperty(property._id)}
                       >
                         Delete
                       </button>
