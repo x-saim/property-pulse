@@ -2,6 +2,7 @@ import connectDB from '@/config/db';
 import Property from '@/models/Property';
 import { NextResponse } from 'next/server';
 import { getSessionUser } from '@/utils/getSessionUser';
+import cloudinary from '@/config/cloudinary';
 
 // GET /api/properties/:id
 export const GET = async (request, { params }) => {
@@ -22,7 +23,7 @@ export const GET = async (request, { params }) => {
 };
 
 // DELETE /api/properties/:id
-
+// Deleting respective property images from cloudinary
 export const DELETE = async (request, { params }) => {
   try {
     const propertyId = params.id;
@@ -46,6 +47,19 @@ export const DELETE = async (request, { params }) => {
     // Verify ownership
     if (property.owner.toString() !== userId) {
       return NextResponse.json('Unauthorized', { status: 401 });
+    }
+
+    // Extract public id's from image url in DB
+    const publicIds = property.images.map((imageUrl) => {
+      const parts = imageUrl.split('/');
+      return parts.at(-1).split('.').at(0);
+    });
+
+    // Delete images from Cloudinary
+    if (publicIds.length > 0) {
+      for (let publicId of publicIds) {
+        await cloudinary.uploader.destroy('propertypulse/' + publicId);
+      }
     }
 
     // Delete property
