@@ -117,8 +117,28 @@ const PropertyEditForm = () => {
     fetchPropertyData();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const formData = new FormData(e.target);
+
+      const res = await fetch(`/api/properties/${id}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (res.status === 200) {
+        router.push(`/properties/${id}`);
+        toast.success('Property successfully updated.');
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error('Permission denied.');
+      } else {
+        toast.error('Something went wrong.');
+      }
+    } catch (error) {
+      toast.error('Error updating property:', error);
+    }
   };
 
   return (
@@ -126,7 +146,7 @@ const PropertyEditForm = () => {
     !loading && (
       <form onSubmit={handleSubmit}>
         <h2 className='text-3xl text-center font-semibold mb-6'>
-          Update Property
+          Edit Property
         </h2>
 
         {/* Property Type */}
@@ -590,7 +610,7 @@ const PropertyEditForm = () => {
             className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
             type='submit'
           >
-            Edit Property
+            Update Property
           </button>
         </div>
       </form>

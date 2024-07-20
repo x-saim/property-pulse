@@ -77,4 +77,3 @@ const PropertyPage = () => {
 };
 
 export default PropertyPage;
-s;
